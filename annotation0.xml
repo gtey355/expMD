@@ -37,6 +37,9 @@
 						<Record Type="UI.DataField">
 							<PropertyValue Property="Value" Path="custname"/>
 						</Record>
+						<Record Type="UI.DataField">
+							<PropertyValue Property="Value" String="teststrig"/>
+						</Record>
 					</Collection>
 				</Annotation>
 			</Annotations>
