@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Master-Detail App for example</title>
+
+	<!-- Bootstrapping UI5 -->
+	<script id="sap-ui-bootstrap" src="resources/sap-ui-core.js" data-sap-ui-libs="sap.m" data-sap-ui-theme="sap_belize" data-sap-ui-compatversion="edge" data-sap-ui-preload="async" data-sap-ui-resourceroots="{&quot;ns.expMD&quot;: &quot;.&quot;}" data-sap-ui-frameoptions="trusted">
+	</script>
+	
+<script>
+var bRunWithMock = true;
+var sRunWithMock = jQuery.sap.getUriParameters().get('run-with-mock');
+if (sRunWithMock === 'false') {
+bRunWithMock = false;
+}
+if (bRunWithMock) {
+jQuery.sap.require('sap.ui.core.util.MockServer');
+var uri = '/drive/srv.xsodata/';
+var oMock = new sap.ui.core.util.MockServer({rootUri : uri});
+var _sAppModulePath = "ns.expMD/";
+var sMetadataPath = "localService/metadata.xml";
+var sMetadataUrl = jQuery.sap.getModulePath(_sAppModulePath) + "/" + sMetadataPath;
+oMock.simulate(sMetadataUrl);
+oMock.start();
+	jQuery(document).ready(function($) {  sap.m.MessageToast.show('Running in demo mode with mock data.', {  duration : 4000 });
+});
+new sap.ui.core.util.MockServer({rootUri: "../annotation0.xml", requests: [{ method: "GET", path: new RegExp(""),
+response: function(oXhr) { 
+jQuery.sap.require("jquery.sap.xml");
+var oAnnotations = jQuery.sap.sjax({ url: jQuery.sap.getModulePath(_sAppModulePath + "../annotation0.xml".replace(".xml", ""), ".xml"),
+dataType: "xml"}).data;
+oXhr.respondXML(200, {}, jQuery.sap.serializeXML(oAnnotations));
+return true;
+}
+}]
+}).start();
+//Fake LREP
+jQuery.sap.require("sap.ui.fl.FakeLrepConnector");
+sap.ui.fl.FakeLrepConnector.enableFakeConnector("fakeLRep.json");
+}
+</script>
+
+
+
+	<script>
+		sap.ui.getCore().attachInit(function () {
+			sap.ui.require([
+				"sap/m/Shell",
+				"sap/ui/core/ComponentContainer"
+			], function (Shell, ComponentContainer) {
+				// initialize the UI component
+				new Shell({
+					app: new ComponentContainer({
+						height: "100%",
+						name: "ns.expMD",
+						settings: {
+							id: "expMD"
+						}
+					})
+				}).placeAt("content");
+			});
+		});
+	</script>
+
+</head>
+
+<!-- UI Content -->
+<body class="sapUiBody" id="content">
+</body>
+</html>
